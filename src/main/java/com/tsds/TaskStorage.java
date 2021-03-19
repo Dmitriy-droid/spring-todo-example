@@ -2,25 +2,22 @@ package com.tsds;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-class FileStructure {
-    public List<Task> tasks;
+import javax.annotation.PostConstruct;
 
-    public FileStructure(List<Task> tasks) {
-        this.tasks = tasks;
-    }
-
-    public FileStructure() {
-    }
-}
-
+@Component
 public class TaskStorage {
     private List<Task> tasks = new ArrayList<>();
+
+    public TaskStorage() {
+    }
 
     public List<Task> getTasks() {
         return new ArrayList<>(tasks);
@@ -49,30 +46,25 @@ public class TaskStorage {
         return true;
     }
 
+    @PostConstruct
     public void addInitialTasks() {
-        boolean load = false;
         try {
-            load = load();
+            boolean load = load();
+            if (!load) {
+                addTask("Learn Java");
+                addTask("Learn SQL");
+                addTask("Profit!");
+            }
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
-        if (!load) {
-            addTask("Learn Java");
-            addTask("Learn SQL");
-            addTask("Profit!");
-        }
     }
 
     public void save() {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            FileStructure fs = new FileStructure(tasks);
-            File data = new File("data");
-            if (!data.exists()) {
-                data.mkdir();
-            }
-            objectMapper.writeValue(new File("data/tasks.json"), fs);
+            new File("data").mkdir();
+            new ObjectMapper().writeValue(new File("data/tasks.json"), this);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,9 +73,8 @@ public class TaskStorage {
     private boolean load() throws IOException {
         File file = new File("data/tasks.json");
         if (file.exists()) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            FileStructure fs = objectMapper.readValue(file, FileStructure.class);
-            tasks = fs.tasks;
+            TaskStorage ts = new ObjectMapper().readValue(file, TaskStorage.class);
+            tasks = ts.tasks;
             return true;
         }
         return false;

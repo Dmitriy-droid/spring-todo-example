@@ -2,16 +2,12 @@ package com.tsds;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-enum Result {
-    ok, error
-}
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AppResponse {
-    private final Result result;
+    private final String result;
     private final String error;
 
-    public Result getResult() {
+    public String getResult() {
         return result;
     }
 
@@ -19,16 +15,16 @@ public class AppResponse {
         return error;
     }
 
-    public AppResponse(Result result, String error) {
+    public AppResponse(String result, String error) {
         this.result = result;
         this.error = error;
     }
 
     public static AppResponse ok() {
-        return new AppResponse(Result.ok, null);
+        return new AppResponse("ok", null);
     }
 
     public static AppResponse error(String message) {
-        return new AppResponse(Result.error, message);
+        return new AppResponse("error", message);
     }
 }
