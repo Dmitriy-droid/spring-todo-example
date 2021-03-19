@@ -63,7 +63,10 @@ public class TaskStorage {
 
     public void save() {
         try {
-            new File("data").mkdir();
+            boolean dir = new File("data").mkdir();
+            if (dir) {
+                System.out.println("Created data directory");
+            }
             new ObjectMapper().writeValue(new File("data/tasks.json"), this);
         } catch (IOException e) {
             e.printStackTrace();
