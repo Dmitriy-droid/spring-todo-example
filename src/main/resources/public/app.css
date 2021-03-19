@@ -1,0 +1,59 @@
+@charset "utf-8";
+
+html,
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100%;
+  background: #f5f8fa;
+  font-size: 16px;
+}
+
+main {
+  margin: 16px auto 0;
+  width: 600px;
+  padding: 24px;
+  box-shadow: 0 1px 10px -6px #000;
+  border-radius: 8px;
+  height: calc(100% - 86px);
+  background: #fff;
+}
+
+h1 {
+  text-align: center;
+}
+
+.add-task {
+  padding: 0 0 0 20px;
+  margin: 72px 0 0;
+}
+
+.todo-list {
+  margin-top: 16px;
+}
+
+.task {
+  display: flex;
+  padding: 16px;
+  align-items: center;
+}
+
+.task--completed {
+  color: #80899e;
+}
+
+.task:nth-child(even) {
+  background: #f5f8fa;
+}
+
+.task__id {
+  color: #80899e;
+  margin: 0 4px;
+  font-size: 14px;
+}
+
+.task__del {
+  margin-left: 8px;
+  color: #b8bfcf;
+  font-size: 14px;
+}

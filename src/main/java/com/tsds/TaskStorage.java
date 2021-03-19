@@ -14,9 +14,14 @@ import javax.annotation.PostConstruct;
 
 @Component
 public class TaskStorage {
+    private int maxId = 0;
     private List<Task> tasks = new ArrayList<>();
 
     public TaskStorage() {
+    }
+
+    public int getMaxId() {
+        return maxId;
     }
 
     public List<Task> getTasks() {
@@ -24,7 +29,8 @@ public class TaskStorage {
     }
 
     public void addTask(String text) {
-        tasks.add(new Task(tasks.size() + 1, text));
+        maxId++;
+        tasks.add(new Task(maxId, text));
         save();
     }
 
