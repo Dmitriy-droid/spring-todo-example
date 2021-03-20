@@ -46,7 +46,7 @@ class App {
     const del = document.createElement("a");
     del.classList.add("task__del");
     del.href = "javascript:void(0)";
-    del.textContent = "удалить";
+    del.textContent = "delete";
     del.addEventListener("click", async e => {
       e.preventDefault();
       await this.remove(task);
@@ -75,7 +75,7 @@ class App {
     const send = async () => {
       const text = addTaskInput.value;
       if (!text) {
-        alert("Напишите текст задачи!");
+        alert("Task text should not be empty");
         return;
       }
       addTaskInput.value = "";

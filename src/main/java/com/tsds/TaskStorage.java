@@ -57,9 +57,7 @@ public class TaskStorage {
         try {
             boolean load = load();
             if (!load) {
-                addTask("Learn Java");
-                addTask("Learn SQL");
-                addTask("Profit!");
+                addTask("Example task");
             }
         } catch (IOException e) {
             e.printStackTrace();
