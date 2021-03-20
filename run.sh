@@ -2,4 +2,4 @@
 
 cd "$(dirname "$0")" || exit
 
-BROWSER_OPEN_URL=http://localhost:9000 bash -c ./gradle-proj-*.jar
+BROWSER_OPEN_URL=http://localhost:9000 bash -c ./spring-todo-*.jar
