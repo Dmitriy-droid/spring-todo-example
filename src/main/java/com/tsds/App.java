@@ -21,7 +21,7 @@ public class App {
         String user = "dim";
         String password = "mypassword";
 
-        String query = "SELECT * FROM save";
+        String query = "SELECT * FROM tasks";
 
         try {
             Connection connection = DriverManager.getConnection(url, user, password);
