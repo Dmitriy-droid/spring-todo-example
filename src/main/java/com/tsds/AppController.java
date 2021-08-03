@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class AppController {
 
 
     @PostMapping("/tasks")
-    public AppResponse addTask(@RequestParam String text) {
+    public AppResponse addTask(@RequestParam String text) throws SQLException {
         taskStorage.addTask(text);
         return AppResponse.ok();
     }
