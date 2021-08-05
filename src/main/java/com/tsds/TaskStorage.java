@@ -1,33 +1,26 @@
 package com.tsds;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.annotation.PostConstruct;
 
 @Component
 public class TaskStorage {
-    private int maxId = 0;
-    private List<Task> tasks = new ArrayList<>();
 
     public List<Task> getTasks() {
 
         List<Task> result = new ArrayList<>();
 
-        ConnectionManager connectionManager = new ConnectionManager();
 
-        String query = "SELECT * FROM tasks";
+
+        String query = "SELECT * FROM tasks order by id desc";
 
         try {
-            Statement statement = connectionManager.getConnection().createStatement();
+            Statement statement = ConnectionManager.connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
 
             while (resultSet.next()) {
@@ -47,18 +40,14 @@ public class TaskStorage {
     }
 
     public void addTask(String text) {
-        maxId++;
-        tasks.add(new Task(maxId, text));
 
         ConnectionManager connectionManager = new ConnectionManager();
 
-        String query = "INSERT INTO tasks (id, name, completed) VALUES (?,?,?)";
+        String query = "INSERT INTO tasks (name) VALUES (?)";
 
         try {
-            PreparedStatement statement = connectionManager.getConnection().prepareStatement(query);
-            statement.setInt(1, maxId);
-            statement.setString(2, text);
-            statement.setBoolean(3,false);
+            PreparedStatement statement = ConnectionManager.connection.prepareStatement(query);
+            statement.setString(1, text);
             statement.execute();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -66,37 +55,33 @@ public class TaskStorage {
     }
 
     public boolean deleteTask(int id) {
-        boolean ok = tasks.removeIf(task -> task.getId() == id);
 
         ConnectionManager connectionManager = new ConnectionManager();
 
         String query = "DELETE FROM tasks WHERE id=?";
 
         try {
-            PreparedStatement statement = connectionManager.getConnection().prepareStatement(query);
+            PreparedStatement statement = ConnectionManager.connection.prepareStatement(query);
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (Exception ex) {
             ex.printStackTrace();
+            return false;
         }
-        return ok;
+        return true;
     }
 
 
     public boolean setComplete(int id, boolean complete) {
-        Optional<Task> found = tasks.stream().filter(task -> task.getId() == id).findFirst();
-        if (found.isEmpty()) {
-            return false;
-        }
-        found.get().setCompleted(complete);
 
         ConnectionManager connectionManager = new ConnectionManager();
 
-        String query = "update tasks set completed = true and completed = false where id = ?";
+        String query = "update tasks set completed = ? where id = ?";
 
                 try {
-                    PreparedStatement statement = connectionManager.getConnection().prepareStatement(query);
-                    statement.setInt(1, id);
+                    PreparedStatement statement = ConnectionManager.connection.prepareStatement(query);
+                    statement.setBoolean(1, complete);
+                    statement.setInt(2, id);
                     statement.executeUpdate();
                 } catch (Exception ex) {
                     ex.printStackTrace();

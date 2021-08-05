@@ -2,7 +2,6 @@ package com.tsds;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 
 public class ConnectionManager {
 
@@ -18,9 +17,5 @@ public class ConnectionManager {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 }
